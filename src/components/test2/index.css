@@ -46,46 +46,28 @@
     padding: 1rem;
 }
 
-@media (max-width:990px) {
-
-    .test2Container h2 {
-        text-transform: uppercase;
-        font-size: 3rem;
-    }
-
-    .test2Container ul {
-        list-style: none;
-    }
-
-    .test2Container .main {
-        font-size: 1rem;
-        display: block;
-        color: rgb(157, 28, 66);
-    }
-
-    .test2Container button {
-        margin-top: 1.5rem;
-        color: #fff;
-        background-color: rgb(83, 133, 7);
-        padding: 0.5rem;
-        border-radius: 0.5rem;
-    }
-
-    .test2Container button:hover {
-        background-color: rgb(222, 12, 12);
+@media (max-width:700px) {
+    .test2Container {
+        max-width: 350px;
     }
 
     .test2Container .columnWrapper {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
+        display: flex;
+        margin-left: -3.2rem;
     }
 
-    .test2Container .columnWrapper h4 {
-        color: rgb(21, 32, 177);
+    .test2Container .columnWrapper ul {
+        width: 100%;
     }
 
-    .test2Container .columnWrapper li {
-        height: 3rem;
-        padding: 1rem;
+    .test2Container .columnWrapper ul li {
+        width: 5px;
+        height: 2rem;
+        padding: 20x;
+        font-size: 0.7rem;
+    }
+
+    .test2Container .columnWrapper ul li input {
+        width: 2.5rem;
     }
 }
