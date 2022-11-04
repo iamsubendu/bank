@@ -1,0 +1,28 @@
+.urbanContainer {
+    padding: 2rem;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td,
+th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+button {
+    margin-top: 2rem;
+    background-color: green;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    color: #fff;
+}
