@@ -21,44 +21,44 @@ const Bank = () => {
   let [septmbr, setSeptember] = useState(0);
   let [octbr, setOctober] = useState(0);
   //===========================================================
+
   let checkInterest = () => {
     mainBal[0] = opBlnc - chngRcvry[0];
     let d = (mainBal[0] * 0.1 * 30) / 365;
-    setApril(d);
-    console.log(d);
+    setApril(Math.round(d));
     mainBal[1] = mainBal[0] + april - chngRcvry[1];
     let d1 = (mainBal[1] * 0.1 * 31) / 365;
-    setMay(d1);
+    setMay(Math.round(d1));
     mainBal[2] = mainBal[1] + may - chngRcvry[2];
     let d2 = (mainBal[2] * 0.1 * 30) / 365;
-    setJune(d2);
+    setJune(Math.round(d2));
     mainBal[3] = mainBal[2] + jun - chngRcvry[3];
     let d3 = (mainBal[3] * 0.1 * 31) / 365;
-    setJuly(d3);
+    setJuly(Math.round(d3));
     mainBal[4] = mainBal[3] + july - chngRcvry[4];
     let d4 = (mainBal[4] * 0.1 * 30) / 365;
-    setAugust(d4);
+    setAugust(Math.round(d4));
     mainBal[5] = mainBal[4] + augst - chngRcvry[5];
     let d5 = (mainBal[5] * 0.1 * 31) / 365;
-    setSeptember(d5);
+    setSeptember(Math.round(d5));
     mainBal[6] = mainBal[5] + septmbr - chngRcvry[6];
     let d6 = (mainBal[6] * 0.1 * 30) / 365;
-    setOctober(d6);
+    setOctober(Math.round(d6));
     mainBal[7] = mainBal[6] + octbr - chngRcvry[7];
     let d7 = (mainBal[7] * 0.1 * 31) / 365;
-    setNovember(d7);
+    setNovember(Math.round(d7));
     mainBal[8] = mainBal[7] + nov - chngRcvry[8];
     let d8 = (mainBal[8] * 0.1 * 30) / 365;
-    setDecember(d8);
+    setDecember(Math.round(d8));
     mainBal[9] = mainBal[8] + dec - chngRcvry[9];
     let d9 = (mainBal[9] * 0.1 * 31) / 365;
-    setJan(d9);
+    setJan(Math.round(d9));
     mainBal[10] = mainBal[9] + jan - chngRcvry[10];
     let d10 = (mainBal[10] * 0.1 * 28) / 365;
-    setFeb(d10);
+    setFeb(Math.round(d10));
     mainBal[11] = mainBal[10] + feb - chngRcvry[11];
     let d11 = (mainBal[11] * 0.1 * 31) / 365;
-    setMarch(d11);
+    setMarch(Math.round(d11));
     setRemBlnc(mainBal);
   };
   const fixedRcvry = (e) => {
@@ -71,12 +71,49 @@ const Bank = () => {
     setChngRcvry(da);
     checkInterest();
   };
+  let year = Array(12).fill(null);
+  let monthName = Array(12).fill(null);
+  let daysInMonth = Array(12).fill(null);
+  const checkWithDate = (e) => {
+    let date = e.target.value;
+    let splitedDate = date.split('-');
+    let selectedYear = splitedDate[0];
+    let selectedMonth = splitedDate[1];
+    let selectedDay = splitedDate[2];
+
+    let data = Array(12).fill(null);
+
+    let d1 = new Date(selectedYear, selectedMonth, 0).getDate();
+    let d2 = d1 - selectedDay + 1;
+    daysInMonth[selectedMonth - 1] = d2;
+
+    let remainingMonths = 12 - selectedMonth;
+    for (let i = remainingMonths; i <= 12; i++) {
+      year[i - 1] = selectedYear;
+      data[i - 1] = {
+        year: year[i - 1],
+        days: daysInMonth[i - 1],
+        mName: monthName[i - 1],
+      };
+    }
+    for (let i = remainingMonths; i >= 0; i--) {
+      let c = selectedYear.charAt(3);
+      console.log(c);
+      year[i - 1] = selectedYear + 1;
+      data[i - 1] = {
+        year: year[i - 1],
+        days: daysInMonth[i - 1],
+        mName: monthName[i - 1],
+      };
+    }
+  };
   return (
-    <div className="container">
+    <div className="test2Container">
       <div className="tableWrapper">
+        <h2>Interest Calculator</h2>
         <div className="main">
           <span>
-            <h2>Opening Balance</h2>
+            <h4>Opening Balance</h4>
             <input
               type="number"
               value={opBlnc}
@@ -84,8 +121,12 @@ const Bank = () => {
             />
           </span>
           <span>
-            <h2>Recovery</h2>
+            <h4>Recovery</h4>
             <input type="number" value={rcvry} onChange={fixedRcvry} />
+          </span>
+          <span>
+            <h4>Date in which loan granted</h4>
+            <input type="date" onChange={checkWithDate} />
           </span>
         </div>
         <button onClick={checkInterest}>Let's Check</button>

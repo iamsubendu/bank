@@ -1,15 +1,11 @@
 import React from 'react';
-// import Urban from './components/Urban/Urban';
-// import Check from './components/test1/index';
-import Test2 from './components/test2/index';
+import Urban from './components/Urban/Urban';
 
 const App = () => {
   return (
     <>
       <main>
-        {/* <Urban />
-        <Check /> */}
-        <Test2 />
+        <Urban />
       </main>
     </>
   );

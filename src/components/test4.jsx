@@ -1,8 +1,7 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import './Urban.css';
+import React, { useEffect } from 'react';
+import { useState } from 'react';
 
-const Urban = () => {
+const Test4 = () => {
   let yearDefined = [
     { monthNo: 1, monthName: 'January' },
     { monthNo: 2, monthName: 'February' },
@@ -25,7 +24,7 @@ const Urban = () => {
   let [percentage] = useState(Array(24).fill(0));
   //====
   let [opBlnc, setOpBlnc] = useState(0);
-  let [chngRcvry, setChngRcvry] = useState(Array(24).fill(0));
+  let [chngRcvry, setChngRcvry] = useState(Array(12).fill(0));
   const newYear = [];
   const rate = 0.1;
   //====
@@ -68,7 +67,7 @@ const Urban = () => {
       let monthName = mName.monthName;
       let noOfdaysInMonth = new Date(year, monthNo, 0).getDate();
       let remainingBalance = remBlnc[i];
-      let recovery = chngRcvry[i] ? parseInt(chngRcvry[i]) : 0;
+      let recovery = parseInt(chngRcvry[i]);
       let percentagePerMonth = percentage[i];
       let index = i;
       newYear.push({
@@ -88,7 +87,7 @@ const Urban = () => {
   };
   const fixedRcvry = (e) => {
     setRcvry(e.target.value);
-    setChngRcvry(Array(24).fill(e.target.value));
+    setChngRcvry(Array(range + 1).fill(e.target.value));
   };
   const changeRcvryValue = (index, data) => {
     let da = chngRcvry;
@@ -100,9 +99,6 @@ const Urban = () => {
     localStorage.setItem('newYear', JSON.stringify(yr));
     checkInterest();
   };
-  const daysInYear = (year) => {
-    return (year % 4 === 0 && year % 100 > 0) || year % 400 === 0 ? 366 : 365;
-  };
   const checkInterest = () => {
     let yr = JSON.parse(localStorage.getItem('newYear'));
     for (let j = 0; j <= range; j++) {
@@ -112,14 +108,12 @@ const Urban = () => {
         let dysInMonth = new Date(yeaR, mNo, 0).getDate();
         let daysLeftForMonthEnd = dysInMonth - selectedDay + 1;
         let instrstOftakenAmountForSameMonth = Math.round(
-          (opBlnc * rate * daysLeftForMonthEnd) / daysInYear(yr[j].year)
+          (opBlnc * rate * daysLeftForMonthEnd) / yr[j].year
         );
-        console.log(instrstOftakenAmountForSameMonth);
         let newPricipalBalance = opBlnc + instrstOftakenAmountForSameMonth;
-        yr[j].remainingBalance = newPricipalBalance - yr[j].recovery;
+        yr[j].remainingBalance = newPricipalBalance - chngRcvry[j];
         let d =
-          (yr[j].remainingBalance * rate * yr[j].noOfdaysInMonth) /
-          daysInYear(yr[j].year);
+          (yr[j].remainingBalance * rate * yr[j].noOfdaysInMonth) / yr[j].year;
         yr[j].percentagePerMonth = Math.round(d);
       } else {
         yr[j].remainingBalance =
@@ -127,8 +121,7 @@ const Urban = () => {
           yr[j - 1].percentagePerMonth -
           chngRcvry[j];
         let d =
-          (yr[j].remainingBalance * rate * yr[j].noOfdaysInMonth) /
-          daysInYear(yr[j].year);
+          (yr[j].remainingBalance * rate * yr[j].noOfdaysInMonth) / yr[j].year;
         yr[j].percentagePerMonth = Math.round(d);
       }
     }
@@ -141,88 +134,45 @@ const Urban = () => {
   };
   useEffect(() => {}, [year]);
   return (
-    <div className="test2Container">
-      <div className="tableWrapper">
-        <h2>Interest Calculator</h2>
-        <div className="main">
-          <span>
-            <h4>Opening Balance</h4>
-            <input
-              type="number"
-              onChange={(e) => setOpBlnc(parseInt(e.target.value))}
-            />
-          </span>
-          <span>
-            <h4>Recovery</h4>
-            <input
-              type="number"
-              // value={rcvry}
-              onChange={fixedRcvry}
-            />
-          </span>
-          <span>
-            <h4>Date in which loan granted</h4>
-            <input type="date" onChange={getDate} />
-          </span>
-          <span>
-            <h4>Enter required months</h4>
-            <input type="number" onChange={getRange} />
-          </span>
-        </div>
-        <button onClick={calculatePeriod}>Let's Check</button>
-        <div className="columnWrapper">
-          <ul>
-            <li>
-              <h4>Month</h4>
-            </li>
-            {year
-              ? year.map((item) => <li key={item.index}>{item.monthName}</li>)
-              : 'Loading'}
-          </ul>
-          <ul>
-            <li>
-              <h4>Interest</h4>
-            </li>
-            {year
-              ? year.map((item) => (
-                  <li key={item.index}>{item.percentagePerMonth}</li>
-                ))
-              : 'Loading'}
-          </ul>
-          {/* =======Recovery======= */}
-          <ul>
-            <li>
-              <h4>Recovery</h4>
-            </li>
-            {year
-              ? year.map((item) => (
-                  <li key={item.index}>
-                    <input
-                      type="number"
-                      value={chngRcvry[item.index]}
-                      onChange={(e) =>
-                        changeRcvryValue(item.index, parseInt(e.target.value))
-                      }
-                    />
-                  </li>
-                ))
-              : 'Loading'}
-          </ul>
-          {/* =======balance======= */}
-          <ul>
-            <li>
-              <h4>Balance</h4>
-            </li>
-            {year
-              ? year.map((item) => (
-                  <li key={item.index}>{item.remainingBalance}</li>
-                ))
-              : 'Loading'}
-          </ul>
-        </div>
-      </div>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        marginTop: '20vh',
+      }}
+    >
+      <input type="date" onChange={getDate} />
+      <p>select upto 24 months</p>
+      <input type="number" onChange={getRange} />
+      <input
+        type="number"
+        // value={opBlnc}
+        onChange={(e) => setOpBlnc(parseInt(e.target.value))}
+      />
+      <input type="number" value={rcvry} onChange={fixedRcvry} />
+      <button onClick={calculatePeriod}>Calculate</button>
+      {year
+        ? year.map((item) => (
+            <div key={item.index}>
+              <li>{item.monthName}</li>
+              <li>{item.year}</li>
+              <li>{item.percentagePerMonth}</li>
+              <li>{item.remainingBalance}</li>
+              <li>
+                <input
+                  type="number"
+                  value={chngRcvry[item.index]}
+                  onChange={(e) => changeRcvryValue(item.index, e.target.value)}
+                />
+              </li>
+              <hr />
+            </div>
+          ))
+        : 'Wait till values filled'}
     </div>
   );
 };
 
-export default Urban;
+export default Test4;
