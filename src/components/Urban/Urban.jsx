@@ -88,6 +88,7 @@ const Urban = () => {
   };
   const fixedRcvry = (e) => {
     setRcvry(e.target.value);
+    console.log(rcvry);
     setChngRcvry(Array(24).fill(e.target.value));
   };
   const changeRcvryValue = (index, data) => {
